@@ -30,8 +30,12 @@ def zliczaj_produkty(limit_kalorii):
                 print("Aktualnie masz zjedzone: ",kalorie_uzytkownika)
         else:
             print("\nTwoje dzisiejsze menu:")
-            for produkt in lista_produktow:
-                print(f"- {produkt}")
+            with open("dziennik.txt", "a", encoding="utf-8") as plik:
+                for produkt in lista_produktow:
+                    print(f"- {produkt}")
+                    plik.write(f"{produkt}\n")
+                plik.write(f"Suma sesji: {kalorie_uzytkownika} kcal\n")
+                plik.write("-" * 20 + "\n")
             print("Twoje kalorie wynoszą: ", kalorie_uzytkownika)
             break
 

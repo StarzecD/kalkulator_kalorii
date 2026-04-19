@@ -1,0 +1,6 @@
+chleb: 500.0 kcal
+jajko: 300.0 kcal
+zupa pomidorowa: 300.0 kcal
+schab: 800.0 kcal
+Suma sesji: 1900.0 kcal
+--------------------
