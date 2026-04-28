@@ -1,3 +1,4 @@
+import json
 from narzedzia_dietetyczne import pobierz_mnoznik_pal, oblicz_zapotrzebowanie, zliczaj_produkty, pobierz_wartosc, pobierz_opcje
 
 waga = pobierz_wartosc("Jaka jest twoja waga? ")
