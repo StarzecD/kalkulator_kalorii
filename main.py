@@ -1,5 +1,5 @@
 import json
-from narzedzia_dietetyczne import pobierz_mnoznik_pal, oblicz_zapotrzebowanie, zliczaj_produkty, pobierz_wartosc, pobierz_opcje
+from narzedzia_dietetyczne import pobierz_mnoznik_pal, oblicz_zapotrzebowanie, zliczaj_produkty, pobierz_wartosc, pobierz_opcje, podsumowanie_tygodnia, wczytaj_dane, uruchom_menu
 
 waga = pobierz_wartosc("Jaka jest twoja waga? ")
 wiek = pobierz_wartosc("Jaki jest twój wiek? ")
@@ -23,7 +23,9 @@ zapotrzebowanie_kaloryczne = oblicz_zapotrzebowanie(plec, waga, wzrost, wiek, mn
 
 
 if zapotrzebowanie_kaloryczne>0:
-    print("Twoje zapotrzebowanie kaloryczne to:", zapotrzebowanie_kaloryczne)
-    zliczaj_produkty(zapotrzebowanie_kaloryczne)
+    lista_produktow = wczytaj_dane()
+    uruchom_menu(zapotrzebowanie_kaloryczne, lista_produktow, waga, wzrost, plec)
 else:
     print("Nie udało sie obliczyć zapotrzebowania kalorycznego z powodu błędnych danych.")
+
+
