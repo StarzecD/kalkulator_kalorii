@@ -1,5 +1,6 @@
 import json
 from datetime import datetime, timedelta
+from modele import produkty
 
 def uruchom_menu(zapotrzebowanie, lista_produktow, waga, plec, wzrost):
     while True:
@@ -64,14 +65,14 @@ def zliczaj_produkty(limit_kalorii, lista_produktow):
                 print("Twoje kalorie wynoszą: ", kalorie_dzisiaj)
                 break
         else:
-            kalorie_produktu = pobierz_wartosc("Ile to miało kalorii? ")
-            produkt = {
-                "nazwa": nazwa_produktu, 
-                "kalorie": kalorie_produktu,
-                "data": datetime.now().isoformat()
-            }
-            lista_produktow.append(produkt)
-            kalorie_dzisiaj += kalorie_produktu
+            b, t, w = pobierz_surowe_dane()
+            nowy = produkty(nazwa_produktu, b, t, w)
+
+            produkt_do_listy = nowy.produkt() 
+            produkt_do_listy["kalorie"] = nowy.K
+            produkt_do_listy["data"] = datetime.now().isoformat()
+            lista_produktow.append(produkt_do_listy)
+            kalorie_dzisiaj += nowy.K
 
 
             print(f"aktualnie zjedzone: {kalorie_dzisiaj} kcal.")
@@ -79,6 +80,11 @@ def zliczaj_produkty(limit_kalorii, lista_produktow):
             json.dump(lista_produktow, plik, indent=4)
     print("Dane zapisane. Do nastepnego!")
 
+def pobierz_surowe_dane():
+    B = pobierz_wartosc("Ile to miało Białka? ")
+    T = pobierz_wartosc("Ile to miało Tłuszczy? ")
+    W = pobierz_wartosc("Ile to miało Węglowodanów? ")
+    return B, T, W
 
 def pobierz_wartosc(komunikat):
     while True:
@@ -114,6 +120,9 @@ def podsumowanie_tygodnia(lista_produktow):
         return
     
     suma_kcal = sum(p["kalorie"] for p in produkty_tydzien)
+    suma_bialka = sum(p.get("bialko", 0) for p in produkty_tydzien)
+    suma_tluszczy = sum(p.get("tluszcze", 0) for p in produkty_tydzien)
+    suma_weglowodany = sum(p.get("weglowodany", 0) for p in produkty_tydzien)
     daty_z_wpisami = [p["data"][:10] for p in produkty_tydzien]
     unikalne_dni = set(daty_z_wpisami)
 
@@ -124,5 +133,6 @@ def podsumowanie_tygodnia(lista_produktow):
     print("="*30)
     print(f"Liczba aktywnych dni: {len(unikalne_dni)}")
     print(f"Suma kalorii:         {suma_kcal} kcal")
+    print(f"Mikroskładniki:        Białko: {suma_bialka}, Tłuszcze: {suma_tluszczy}, Węglowodany: {suma_weglowodany}.")
     print(f"Średnia na dzień:      {round(srednia, 2)} kcal") # funkcja round usrednia do 2 miejsc po przecinku
     print("="*30 + "\n")
